@@ -1,0 +1,4 @@
+#!/bin/bash
+#It's Bouncy!
+#syntax: rubberfs [create|mount|attach|unmount|stub] [passphrase] [name] [ident] [prefix]
+#Stub creates a fake EML instance for apps (e.g. Crystallise) that require it.
