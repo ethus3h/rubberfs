@@ -1,6 +1,8 @@
 #!/bin/bash
 #It's Bouncy!
-#syntax: rubberfs [create|mount|attach|unmount|reset|stub] [passphrase] [accesskey] [secretkey] [identifier] [prefix] [mountpoint]
+#syntax: rubberfs [create|mount|unmount|reset] [passphrase] [accesskey] [secretkey] [identifier] [prefix] [mountpoint]
+#rubberfs attach [username] [server] [prefix] [mountpoint]
+#rubberfs stub
 #Stub creates a fake EML instance for apps (e.g. Crystallise) that require it.
 
 action="$1"
@@ -28,7 +30,11 @@ mount)
     ln -s "/Wreathe/.Resources/WreatheCloudService/$prefix/mount/" "$mountpoint"
     ;;
 attach)
-    ...
+    username="$1"
+    server="$2"
+    prefix="$3"
+    mountpoint="$4"
+    sshfs -o allow_other,defer_permissions "$username"@"$server":"/Wreathe/.Resources/WreatheCloudService/$prefix/mount/" "$mountpoint"
     ;;
 unmount)
     umount "﻿/Wreathe/.Resources/WreatheCloudService/$prefix/dev/"
@@ -36,9 +42,14 @@ unmount)
     umount "https://s3.us.archive.org/$identifier/$prefix"
     rm $mountpoint
 reset)
-    #Warn 10sec
+    echo "### WARNING! ### WARNING! ### WARNING! ### WARNING! ### WARNING! ###"
+    echo "If this filesystem is mounted by another system, this could cause"
+    echo "corruption. Continuing in 10 seconds; press Control+C to cancel."
+    echo "### WARNING! ^^^ WARNING! ### WARNING! ### WARNING! ^^^ WARNING! ###"
+    sleep 10
     s3backer --reset-mounted-flag --accessId="$accessKey" --accessKey="$secretKey" --baseURL=https://s3.us.archive.org/ --prefix="$prefix" --debug --debug-http "$identifier" --authVersion=aws2 -f
 stub)
+    mkdir -p /Ember\ Media\ Library/Futuramerlin\ Projects/Data/Crystal\ Index/
 *)
     echo "Unknown action."
     exit 1
