@@ -62,6 +62,8 @@ status)
     zpool list zpool
     zpool status zpool
     df -i /zpool
+    #zfs list -ro space -t snapshot
+    zfs list -ro space zpool
 stub)
     mkdir -p /Ember\ Media\ Library/Futuramerlin\ Projects/Data/Crystal\ Index/
 *)
