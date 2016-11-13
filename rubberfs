@@ -2,6 +2,7 @@
 #It's Bouncy!
 #syntax: rubberfs [create|mount|unmount|reset] [passphrase] [accesskey] [secretkey] [identifier] [prefix] [mountpoint]
 #rubberfs attach [username] [server] [prefix] [mountpoint]
+#rubberfs status [prefix]
 #rubberfs stub
 #Stub creates a fake EML instance for apps (e.g. Crystallise) that require it.
 
@@ -55,6 +56,12 @@ reset)
     echo "### WARNING! ^^^ WARNING! ### WARNING! ### WARNING! ^^^ WARNING! ###"
     sleep 10
     s3backer --reset-mounted-flag --accessId="$accessKey" --accessKey="$secretKey" --baseURL=https://s3.us.archive.org/ --prefix="$prefix" --debug --debug-http "$identifier" --authVersion=aws2 -f
+status)
+    prefix="$1"
+    less "/Wreathe/.Resources/WreatheCloudService/$prefix/dev/stats"
+    zpool list zpool
+    zpool status zpool
+    df -i /zpool
 stub)
     mkdir -p /Ember\ Media\ Library/Futuramerlin\ Projects/Data/Crystal\ Index/
 *)
